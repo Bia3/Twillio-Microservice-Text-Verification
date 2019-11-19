@@ -10,7 +10,7 @@ app = Flask(__name__)
 SECRET_KEY = os.getenv('SECRET_KEY', '')
 API_KEY = os.getenv('API_KEY', '')
 account_sid = os.getenv('TWILIO_ACCOUNT_SID')
-auth_token = os.getenv('TWILIO_AUTH_TOKEN')
+twillio_token = os.getenv('TWILIO_AUTH_TOKEN')
 
 
 def decode_auth_token(my_token):
@@ -36,27 +36,24 @@ def send_code():
             # client = Client(account_sid, auth_token)
 
             return "{}".format(decode_auth_token(b64decode(request.headers.get('Authorization'))) == API_KEY)
-
+            auth_header = request.headers.get('Authorization')
             # auth_token = request.headers('Authorization')
-            # if auth_header:
-            #     auth_token = auth_header.split(" ")[1]
-            # else:
-            #     auth_token = ''
-            # if auth_token:
-            #     return True
-                # if decode_auth_token(auth_token) == API_KEY:
-                #     return True
-                    # account_sid = 'ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
-                    # auth_token = 'your_auth_token'
-                    # client = Client(account_sid, auth_token)
-                    #
-                    # message = client.messages.create(
-                    #                               from_='+15017122661',
-                    #                               body='body',
-                    #                               to='+15558675310'
-                    #                           )
-                    #
-                    # print(message.sid)
+            if auth_header:
+                auth_token = b64decode(auth_header)
+            else:
+                auth_token = ''
+            if auth_token:
+                if decode_auth_token(auth_token) == API_KEY:
+
+                    client = Client(account_sid, auth_token)
+
+                    message = client.messages.create(
+                                                  from_='+12243061956',
+                                                  body=ret_data['event']["data"]["new"]["phone_number"]["user_activation_key"],
+                                                  to=ret_data['event']["data"]["new"]["phone_number"]
+                                              )
+
+                    return {'success': message.sid}
                     # return ret_data['event']
 
                     # if ret_data["event"]:
