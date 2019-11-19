@@ -1,5 +1,6 @@
 from flask import Flask, request
 from twilio.rest import Client
+import json
 
 app = Flask(__name__)
 
@@ -8,6 +9,7 @@ app = Flask(__name__)
 def send_code():
     try:
         if request.method == "POST":
+            ret_data = json.dumps(request.data)
             # Your Account Sid and Auth Token from twilio.com/console
             # DANGER! This is insecure. See http://twil.io/secure
             # account_sid = 'ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
@@ -21,6 +23,14 @@ def send_code():
             #                           )
             #
             # print(message.sid)
+            if ret_data.event:
+                event = ret_data.event
+                if event.data:
+                    payload_data = event.data
+                    if payload_data.new:
+                        user_activation_key = payload_data.new.user_activation_key
+                        return user_activation_key
+
             return request.data
         return "none"
 
