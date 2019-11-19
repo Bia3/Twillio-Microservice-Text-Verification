@@ -42,6 +42,7 @@ def send_code():
                 auth_token = ''
             if auth_token:
                 if decode_auth_token(auth_token) == API_KEY:
+                    return True
                     # account_sid = 'ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
                     # auth_token = 'your_auth_token'
                     # client = Client(account_sid, auth_token)
@@ -55,19 +56,19 @@ def send_code():
                     # print(message.sid)
                     # return ret_data['event']
 
-                    if ret_data["event"]:
-                        event = ret_data["event"]
-                        if event["data"]:
-                            payload_data = event["data"]
-                            if payload_data["new"]:
-                                new_data = payload_data["new"]
-                                phone_number = new_data["phone_number"]
-                                user_activation_key = new_data["user_activation_key"]
-                                return "activation_key: {}\nphone: {}".format(user_activation_key, phone_number)
+                    # if ret_data["event"]:
+                    #     event = ret_data["event"]
+                    #     if event["data"]:
+                    #         payload_data = event["data"]
+                    #         if payload_data["new"]:
+                    #             new_data = payload_data["new"]
+                    #             phone_number = new_data["phone_number"]
+                    #             user_activation_key = new_data["user_activation_key"]
+                    #             return "activation_key: {}\nphone: {}".format(user_activation_key, phone_number)
         return "none"
 
     except Exception as e:
-        return e.__str__()
+        return {'Error': e.__str__()}
 
 
 if __name__ == '__main__':
