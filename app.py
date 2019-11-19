@@ -36,7 +36,7 @@ def send_code():
         return "none"
 
     except Exception as e:
-        return 'Error'
+        return e
 
 
 if __name__ == '__main__':
