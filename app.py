@@ -40,15 +40,14 @@ def send_code():
                 auth_token = ''
             if auth_token:
                 if decode_auth_token(auth_token) == API_KEY:
-                    return "{}".format(True)
-                    # client = Client(account_sid, auth_token)
-                    #
-                    # message = client.messages.create(
-                    #   from_='+12243061956',
-                    #   body=ret_data['event']["data"]["new"]["user_activation_key"],
-                    #   to=ret_data['event']["data"]["new"]["phone_number"]
-                    # )
-                    # return "{}".format({'success': message.sid})
+                    client = Client(account_sid, twillio_token)
+                    # return "{}".format(True)
+                    message = client.messages.create(
+                      from_='+12243061956',
+                      body=ret_data['event']["data"]["new"]["user_activation_key"],
+                      to=ret_data['event']["data"]["new"]["phone_number"]
+                    )
+                    return "{}".format({'success': message.sid})
 
         return "Forbidden", 403
 
