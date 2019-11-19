@@ -21,7 +21,7 @@ def send_code():
             #                           )
             #
             # print(message.sid)
-            return request.form
+            return request.data
         return "none"
 
     except Exception as e:
