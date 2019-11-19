@@ -41,8 +41,9 @@ def send_code():
             # else:
             #     auth_token = ''
             if auth_token:
-                if decode_auth_token(auth_token) == API_KEY:
-                    return True
+                return True
+                # if decode_auth_token(auth_token) == API_KEY:
+                #     return True
                     # account_sid = 'ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
                     # auth_token = 'your_auth_token'
                     # client = Client(account_sid, auth_token)
@@ -65,10 +66,10 @@ def send_code():
                     #             phone_number = new_data["phone_number"]
                     #             user_activation_key = new_data["user_activation_key"]
                     #             return "activation_key: {}\nphone: {}".format(user_activation_key, phone_number)
-        return "none"
+        return "Forbidden", 403
 
     except Exception as e:
-        return {'Error': e.__str__()}
+        return {'Error': e.__str__()}, 500
 
 
 if __name__ == '__main__':
