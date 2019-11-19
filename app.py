@@ -1,13 +1,13 @@
 import jwt
 from flask import Flask, request
 from twilio.rest import Client
-from os import environ, getenv
+from os import environ
 import json
 
 
 app = Flask(__name__)
-SECRET_KEY = getenv('SECRET_KEY')
-API_KEY = getenv('API_KEY')
+SECRET_KEY = environ('SECRET_KEY')
+API_KEY = environ('API_KEY')
 
 
 def decode_auth_token(auth_token):
