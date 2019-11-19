@@ -33,11 +33,7 @@ def send_code():
     try:
         if request.method == "POST":
             ret_data = json.loads(request.data.decode('utf8'))
-            # client = Client(account_sid, auth_token)
-
-            return "{}".format(decode_auth_token(b64decode(request.headers.get('Authorization'))) == API_KEY)
             auth_header = request.headers.get('Authorization')
-            # auth_token = request.headers('Authorization')
             if auth_header:
                 auth_token = b64decode(auth_header)
             else:
