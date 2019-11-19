@@ -34,7 +34,7 @@ def send_code():
             ret_data = json.loads(request.data.decode('utf8'))
             # client = Client(account_sid, auth_token)
 
-            return request.headers.get_all()
+            return request.headers.get('Authorization')
 
             # auth_token = request.headers('Authorization')
             # if auth_header:
@@ -67,10 +67,10 @@ def send_code():
                     #             phone_number = new_data["phone_number"]
                     #             user_activation_key = new_data["user_activation_key"]
                     #             return "activation_key: {}\nphone: {}".format(user_activation_key, phone_number)
-        return "Forbidden"
+        return "Forbidden", 403
 
     except Exception as e:
-        return {'Error': e.__str__()}
+        return {'Error': e.__str__()}, 500
 
 
 if __name__ == '__main__':
