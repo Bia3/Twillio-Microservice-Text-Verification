@@ -68,7 +68,7 @@ def send_code():
                     #             phone_number = new_data["phone_number"]
                     #             user_activation_key = new_data["user_activation_key"]
                     #             return "activation_key: {}\nphone: {}".format(user_activation_key, phone_number)
-        return "Forbidden", 403
+        return "Forbidden"
 
     except Exception as e:
         return {'Error': e.__str__()}
