@@ -1,5 +1,6 @@
 import jwt
 from flask import Flask, request
+from base64 import b64decode
 from twilio.rest import Client
 import os
 import json
@@ -34,7 +35,7 @@ def send_code():
             ret_data = json.loads(request.data.decode('utf8'))
             # client = Client(account_sid, auth_token)
 
-            return request.headers.get('Authorization')
+            return decode_auth_token(b64decode(request.headers.get('Authorization'))) == API_KEY
 
             # auth_token = request.headers('Authorization')
             # if auth_header:
