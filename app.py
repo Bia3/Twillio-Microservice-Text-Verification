@@ -45,7 +45,7 @@ def send_code():
 
                     message = client.messages.create(
                       from_='+12243061956',
-                      body=ret_data['event']["data"]["new"]["phone_number"]["user_activation_key"],
+                      body=ret_data['event']["data"]["new"]["user_activation_key"],
                       to=ret_data['event']["data"]["new"]["phone_number"]
                     )
                     return "{}".format({'success': message.sid})
