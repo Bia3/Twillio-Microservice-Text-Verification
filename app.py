@@ -1,16 +1,32 @@
 import jwt
+import re
 from flask import Flask, request
 from base64 import b64decode
 from twilio.rest import Client
 import os
 import json
 
-
+PHONE_NUMBER_ELEVEN_US = re.compile(r'\+1[0-9]{10}')
+PHONE_NUMBER_US_NO_SYMBOLS = re.compile(r'[0-9]{10}')
+PHONE_NUMBER_US_SYMBOLS = re.compile(r'((\+|)1|\(|(\+|)1|)( |)(\(|)[0-9]{3}(\)|-| )( |)[0-9]{3}(-|)[0-9]{4}')
+PHONE_NUMBER_ALL_FIVES = re.compile(r'((\+|)1|\(|(\+|)1 \(|)555(\) |)555(\-|)5555')
 app = Flask(__name__)
 SECRET_KEY = os.getenv('SECRET_KEY', '')
 API_KEY = os.getenv('API_KEY', '')
 account_sid = os.getenv('TWILIO_ACCOUNT_SID')
 twillio_token = os.getenv('TWILIO_AUTH_TOKEN')
+
+
+def format_number(my_number):
+    if not PHONE_NUMBER_ELEVEN_US.match(my_number):
+        if not PHONE_NUMBER_ALL_FIVES.match(my_number):
+            if PHONE_NUMBER_US_SYMBOLS.match(my_number):
+                my_number = my_number.replace('(', '').replace(')', '').replace('-', '').replace(' ', '')
+                if not PHONE_NUMBER_ELEVEN_US.match(my_number):
+                    my_number = "+1{}".format(my_number)
+                return my_number
+        return 0
+    return my_number
 
 
 def decode_auth_token(my_token):
@@ -41,11 +57,17 @@ def send_code():
             if auth_token:
                 if decode_auth_token(auth_token) == API_KEY:
                     client = Client(account_sid, twillio_token)
+                    message_format = request.headers.get('MessageFormatter')
+                    phone_number_to = format_number(ret_data['event']["data"]["new"]["phone_number"])
+                    phone_number_from = format_number(request.headers.get('From'))
+                    activation_key = ret_data['event']["data"]["new"]["user_activation_key"]
+                    message_body = message_format.format(activation_key)
+
                     # return "{}".format(True)
                     message = client.messages.create(
-                      from_='+12243061956',
-                      body=ret_data['event']["data"]["new"]["user_activation_key"],
-                      to=ret_data['event']["data"]["new"]["phone_number"]
+                      from_=phone_number_from,
+                      body=message_body,
+                      to=phone_number_to
                     )
                     return "{}".format({'success': message.sid})
 
