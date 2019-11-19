@@ -35,13 +35,15 @@ def send_code():
             # auth_token = environ['TWILIO_AUTH_TOKEN']
             # client = Client(account_sid, auth_token)
 
-            auth_token = request.headers('Authorization')
+            return request.headers
+
+            # auth_token = request.headers('Authorization')
             # if auth_header:
             #     auth_token = auth_header.split(" ")[1]
             # else:
             #     auth_token = ''
-            if auth_token:
-                return True
+            # if auth_token:
+            #     return True
                 # if decode_auth_token(auth_token) == API_KEY:
                 #     return True
                     # account_sid = 'ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
@@ -69,7 +71,7 @@ def send_code():
         return "Forbidden", 403
 
     except Exception as e:
-        return {'Error': e.__str__()}, 500
+        return {'Error': e.__str__()}
 
 
 if __name__ == '__main__':
