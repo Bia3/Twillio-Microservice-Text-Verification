@@ -23,13 +23,14 @@ def send_code():
             #                           )
             #
             # print(message.sid)
-            if ret_data.event:
-                event = ret_data.event
-                if event.data:
-                    payload_data = event.data
-                    if payload_data.new:
-                        user_activation_key = payload_data.new.user_activation_key
-                        return user_activation_key
+
+            # if ret_data.event:
+            #     event = ret_data.event
+            #     if event.data:
+            #         payload_data = event.data
+            #         if payload_data.new:
+            #             user_activation_key = payload_data.new.user_activation_key
+            #             return user_activation_key
 
             return request.data
         return "none"
