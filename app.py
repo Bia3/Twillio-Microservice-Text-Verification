@@ -44,27 +44,16 @@ def send_code():
                     client = Client(account_sid, auth_token)
 
                     message = client.messages.create(
-                                                  from_='+12243061956',
-                                                  body=ret_data['event']["data"]["new"]["phone_number"]["user_activation_key"],
-                                                  to=ret_data['event']["data"]["new"]["phone_number"]
-                                              )
+                      from_='+12243061956',
+                      body=ret_data['event']["data"]["new"]["phone_number"]["user_activation_key"],
+                      to=ret_data['event']["data"]["new"]["phone_number"]
+                    )
+                    return "{}".format({'success': message.sid})
 
-                    return {'success': message.sid}
-                    # return ret_data['event']
-
-                    # if ret_data["event"]:
-                    #     event = ret_data["event"]
-                    #     if event["data"]:
-                    #         payload_data = event["data"]
-                    #         if payload_data["new"]:
-                    #             new_data = payload_data["new"]
-                    #             phone_number = new_data["phone_number"]
-                    #             user_activation_key = new_data["user_activation_key"]
-                    #             return "activation_key: {}\nphone: {}".format(user_activation_key, phone_number)
         return "Forbidden", 403
 
     except Exception as e:
-        return {'Error': e.__str__()}, 500
+        return "{}".format({'Error': e.__str__()}), 500
 
 
 if __name__ == '__main__':
