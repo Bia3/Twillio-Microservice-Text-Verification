@@ -8,8 +8,8 @@ import json
 app = Flask(__name__)
 SECRET_KEY = os.getenv('SECRET_KEY', '')
 API_KEY = os.getenv('API_KEY', '')
-account_sid = os.getenv['TWILIO_ACCOUNT_SID']
-auth_token = os.getenv['TWILIO_AUTH_TOKEN']
+account_sid = os.getenv('TWILIO_ACCOUNT_SID')
+auth_token = os.getenv('TWILIO_AUTH_TOKEN')
 
 
 def decode_auth_token(my_token):
