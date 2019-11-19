@@ -1,23 +1,25 @@
 import jwt
 from flask import Flask, request
 from twilio.rest import Client
-from os import environ
+import os
 import json
 
 
 app = Flask(__name__)
-SECRET_KEY = environ('SECRET_KEY')
-API_KEY = environ('API_KEY')
+SECRET_KEY = os.getenv('SECRET_KEY', '')
+API_KEY = os.getenv('API_KEY', '')
+account_sid = os.getenv['TWILIO_ACCOUNT_SID']
+auth_token = os.getenv['TWILIO_AUTH_TOKEN']
 
 
-def decode_auth_token(auth_token):
+def decode_auth_token(my_token):
     """
     Decodes the auth token
-    :param auth_token:
+    :param my_token:
     :return: integer|string
     """
     try:
-        payload = jwt.decode(auth_token, SECRET_KEY)
+        payload = jwt.decode(my_token, SECRET_KEY)
         return payload['sub']
     except jwt.ExpiredSignatureError:
         return 'Signature expired. Please log in again.'
@@ -30,9 +32,6 @@ def send_code():
     try:
         if request.method == "POST":
             ret_data = json.loads(request.data.decode('utf8'))
-
-            # account_sid = environ['TWILIO_ACCOUNT_SID']
-            # auth_token = environ['TWILIO_AUTH_TOKEN']
             # client = Client(account_sid, auth_token)
 
             return request.headers
