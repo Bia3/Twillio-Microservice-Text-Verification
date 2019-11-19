@@ -34,7 +34,7 @@ def send_code():
             ret_data = json.loads(request.data.decode('utf8'))
             # client = Client(account_sid, auth_token)
 
-            return request.headers
+            return request.headers.get_all()
 
             # auth_token = request.headers('Authorization')
             # if auth_header:
