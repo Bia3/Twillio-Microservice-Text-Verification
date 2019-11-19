@@ -31,15 +31,15 @@ def send_code():
         if request.method == "POST":
             ret_data = json.loads(request.data.decode('utf8'))
 
-            account_sid = environ['TWILIO_ACCOUNT_SID']
-            auth_token = environ['TWILIO_AUTH_TOKEN']
-            client = Client(account_sid, auth_token)
+            # account_sid = environ['TWILIO_ACCOUNT_SID']
+            # auth_token = environ['TWILIO_AUTH_TOKEN']
+            # client = Client(account_sid, auth_token)
 
-            auth_header = request.headers.get('Authorization')
-            if auth_header:
-                auth_token = auth_header.split(" ")[1]
-            else:
-                auth_token = ''
+            auth_token = request.headers.get('Authorization')
+            # if auth_header:
+            #     auth_token = auth_header.split(" ")[1]
+            # else:
+            #     auth_token = ''
             if auth_token:
                 if decode_auth_token(auth_token) == API_KEY:
                     return True
