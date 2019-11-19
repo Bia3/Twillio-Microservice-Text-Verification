@@ -35,7 +35,7 @@ def send_code():
             # auth_token = environ['TWILIO_AUTH_TOKEN']
             # client = Client(account_sid, auth_token)
 
-            auth_token = request.headers.get('Authorization')
+            auth_token = request.headers('Authorization')
             # if auth_header:
             #     auth_token = auth_header.split(" ")[1]
             # else:
