@@ -6,15 +6,16 @@ from twilio.rest import Client
 import os
 import json
 
-PHONE_NUMBER_ELEVEN_US = re.compile(r'\+1[0-9]{10}')
-PHONE_NUMBER_US_NO_SYMBOLS = re.compile(r'[0-9]{10}')
-PHONE_NUMBER_US_SYMBOLS = re.compile(r'((\+|)1|\(|(\+|)1|)( |)(\(|)[0-9]{3}(\)|-| )( |)[0-9]{3}(-|)[0-9]{4}')
-PHONE_NUMBER_ALL_FIVES = re.compile(r'((\+|)1|\(|(\+|)1 \(|)555(\) |)555(\-|)5555')
 app = Flask(__name__)
 SECRET_KEY = os.getenv('SECRET_KEY', '')
 API_KEY = os.getenv('API_KEY', '')
 account_sid = os.getenv('TWILIO_ACCOUNT_SID')
 twillio_token = os.getenv('TWILIO_AUTH_TOKEN')
+PHONE_NUMBER_ELEVEN_US = re.compile(r'\+1[0-9]{10}')
+PHONE_NUMBER_US_NO_SYMBOLS = re.compile(r'[0-9]{10}')
+PHONE_NUMBER_US_SYMBOLS = re.compile(r'((\+|)1|\(|(\+|)1|)( |)(\(|)[0-9]{3}(\)|-| )( |)[0-9]{3}(-|)[0-9]{4}')
+PHONE_NUMBER_ALL_FIVES = re.compile(r'((\+|)1|\(|(\+|)1 \(|)555(\) |)555(\-|)5555')
+PHONE_NUMBER_PLUS = re.compile(r'^\+[0-9]+')
 
 
 def format_number(my_number):
@@ -22,9 +23,20 @@ def format_number(my_number):
         if not PHONE_NUMBER_ALL_FIVES.match(my_number):
             if PHONE_NUMBER_US_SYMBOLS.match(my_number):
                 my_number = my_number.replace('(', '').replace(')', '').replace('-', '').replace(' ', '')
-                if not PHONE_NUMBER_ELEVEN_US.match(my_number):
-                    my_number = "+1{}".format(my_number)
+            if not PHONE_NUMBER_ELEVEN_US.match(my_number):
+                my_number = "+1{}".format(my_number)
                 return my_number
+            if my_number.__contains__(' '):
+                my_number = my_number.replace(' ', '')
+            if my_number.__contains__('('):
+                my_number = my_number.replace(' ', '')
+            if my_number.__contains__(')'):
+                my_number = my_number.replace(' ', '')
+            if my_number.__contains__('-'):
+                my_number = my_number.replace(' ', '')
+            if not PHONE_NUMBER_PLUS.match(my_number):
+                my_number = "+{}".format(my_number)
+            return my_number
         return 0
     return my_number
 
