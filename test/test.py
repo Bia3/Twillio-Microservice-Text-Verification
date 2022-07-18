@@ -1,7 +1,7 @@
 import unittest
 from flask import current_app, Flask
 
-test_numbers = ["(801) 372-9511", "5555555555", "+18013729511"]
+test_numbers = ["(808) 372-5555", "5555555555", "+18015559555"]
 
 def test_app_is_development(self):
     self.assertFalse(app['SECRET_KEY'] is 'my_precious')
